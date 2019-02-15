@@ -1,0 +1,119 @@
+
+
+// 软件定时器钟不可用 队列函数  
+//OSSchedRoundRobinCfg(DEF_ENABLED,1,&err);一个系统时钟节拍　１＊１／OSCfg_TickRate_Hz 时间片轮询
+//OSSchedRoundRobinYield (OS_ERR *p_err) 将时间片让给优先级相同的任务  OS_TICK 时间片
+//OS_IdleTask 空闲任务，知道任务进行快慢 自发创建 OS_Ticktask 节拍任务 ，跟踪延时
+//  OSStatTaskCPUUsageInit 统计任务 
+//App_OS_SetAllHook 钩子函数  App_OS_IdleTaskHook
+//OS_CFG_TICK_RATE_HZ 最小延时频率
+//OSTimeDlyHMSM  延时小时   
+//OSTimeDlyResume 大坡延时等待
+// OSTimeGet() OSTimeSet() 
+//OS_CFG_TICK_RATE_HZ    系统时钟节拍的频率
+//OS_CFG_TMR_TASK_RATE_HZ 定时器的实际分辨率  10ms
+
+/*	   软件定时器  
+   OSTmrCreate ((OS_TMR               *)&tmr1,
+                 (CPU_CHAR             *)"tmr1",
+                 (OS_TICK               )10,
+								 (OS_TICK               )100,
+								 (OS_OPT                )OS_OPT_TMR_PERIODIC,
+								 (OS_TMR_CALLBACK_PTR   )	tmr1_callback	,
+								 (void                 *)0,
+								 (OS_ERR               *)&err);
+								 
+								 OSTmrStop(&tmr1,OS_OPT_TMR_NONE,0,&err);
+								 
+								 OSTmrStart(&tmr1,&err);
+*/
+								 
+								 			 
+/* 		   信号量		
+			    OSSemCreate ((OS_SEM*  )&SEM,
+							 (CPU_CHAR*  )"SEM",
+							  (OS_SEM_CTR )5,
+								(OS_ERR* )&err);		
+//OSSemPend(&SEM,0,OS_OPT_PEND_BLOCKING,0,&err);
+//OSSemPost(&SEM,0,OS_OPT_PEND_BLOCKING,0,&err);
+*/
+
+/*   互斥信号量
+
+
+ OSMutexCreate((OS_MUTEX* )&TEST_MUTEX,
+                 (CPU_CHAR* )"TEST_MUTEX",
+								 (OS_ERR* )&err);	
+								 
+								 
+OSMutexPend (&TEST_MUTEX,0,OS_OPT_PEND_BLOCKING,0,&err);
+OSMutexPost(&TEST_MUTEX,OS_OPT_POST_NONE,&err)
+*/
+/*
+    OSTaskSemPost(&Task2_TaskTCB, OS_OPT_POST_NONE,&err)   内嵌任务函数
+    OSTaskSemPend(0,OS_OPT_PEND_BLOCKING,0,&err);  
+*/
+
+/*
+     消息队列相关函数
+void OSQCreate (OS_Q *p_q,
+CPU_CHAR *p_name,
+OS_MSG_QTY max_qty,
+OS_ERR *p_err)
+
+
+void *OSQPend (OS_Q *p_q,
+OS_TICK timeout,
+OS_OPT opt,
+OS_MSG_SIZE *p_msg_size,    消息长度
+CPU_TS *p_ts,   时间戳
+OS_ERR *p_err)	
+
+void OSQPost (OS_Q *p_q,    队列指针
+void *p_void,   						实际内容
+OS_MSG_SIZE msg_size,
+OS_OPT opt,       OS_OPT_POST_FIFO 发送消息保存到末尾
+							     OS_OPT_POST_LIFO 发送消息保存到开头
+								   OS_OPT_POST_NO_SCHED  禁止本函数内执行调度
+OS_ERR *p_err  
+
+*/
+/*
+内嵌队列函数
+ void *OSTaskQPend (OS_TICK timeout,  
+							 OS_OPT opt    OS_OPT_PEND_BLOCKING
+							 OS_MSG_SIZE *p_msg_size, //指向存放消息的大小
+							 CPU_TS *p_ts,           
+							 OS_ERR *p_err)						
+
+    OSTaskQPost (OS_TCB *p_tcb,
+                    void *p_void,														
+								OS_MSG_SIZE msg_size,
+								OS_OPT opt,
+								OS_ERR *p_err)
+   OS_MSG_QTY 
+								
+(OS_ERR*  )&err);
+*/							
+/*
+			
+事件标志组函数
+
+	void OSFlagCreate ( OS_FLAG_GRP *p_grp,
+	CPU_CHAR *p_name,
+	OS_FLAGS flags,   初始值
+	OS_ERR *p_err)
+
+
+OS_FLAGS OSFlagPend ( OS_FLAG_GRP *p_grp,
+OS_FLAGS flags,  序列位
+OS_TICK timeout,
+OS_OPT opt,
+CPU_TS *p_ts,
+OS_ERR *p_err)
+
+OS_FLAGS OSFlagPost ( OS_FLAG_GRP *p_grp,   指向事件标志组
+OS_FLAGS flags,   置位和清零
+OS_OPT opt,   OS_OPT_POST_FLAG_SET
+OS_ERR *p_err)  
+
